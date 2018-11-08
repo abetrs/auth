@@ -11,5 +11,10 @@ export default {
   name: 'home',
   components: {
   },
+  mounted() {
+    if (!localStorage.token) {
+      this.$router.push('/signup');
+    }
+  }
 };
 </script>

@@ -3,6 +3,7 @@
     <h2>Sign Up page</h2>
     <form class="signup" @submit.prevent="sendUser">
       <div class="form-group">
+        <p>Already signed up? <router-link to='/login'>Log in</router-link></p>
         <label class="col-form-label" for="inputDefault">Username</label>
         <input type="text" v-model="username" class="form-control" placeholder="Username" id="inputDefault">
       </div>
@@ -55,11 +56,12 @@ export default {
         this.password = '';
         if (body.error.name === 'MongoError') {
           this.invalid = 'Username or email you entered is taken :(';
-        }
-        if (body.error.name === 'ValidationError') {
+        } if (body.error.name === 'ValidationError') {
           this.invalid = 'Either you forgot something or you entered an invalid entry for some field';
+        } 
+        if (!body.error) {
+          this.$router.push('/login');
         }
-        this.$router.push('/login');
       });
     },
   },

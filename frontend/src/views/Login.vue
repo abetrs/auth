@@ -47,7 +47,7 @@
                 localStorage.token = docs.token;
                 this.$router.push('/');
               } else {
-                this.invalid = 'Internal Server error 500';
+                this.invalid = 'You entered something wrong';
               }
             });
           }).catch(err => this.invalid="Username or password is invalid.");
