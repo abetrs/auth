@@ -20,7 +20,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 // Listening on http://localhost:3000 or whatever
 app.use((req, res, next) => {
-  res.status(400).json({ error: 'There is an error' });
+  res.status(404).json({ error: 'Not found' });
 })
 app.listen(port, () => {
   console.log(`Now listening for requests on 👌  http://localhost:${port}`);
