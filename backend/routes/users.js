@@ -34,19 +34,25 @@ router.post('/login', (req, res) => {
   User.findOne({
     username: req.body.username
   }).then(user => {
-    bcrypt.compare(req.body.password, user.password)
-    .then(result => {
-      const payload = {
-        _id: user._id,
-        username: user.username
-      };
-      jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '1d'},
-      (err, token) => {
-          res.json({
-            token: token
-      });
-    });
-  }).catch(err => res.status(422).json({error: err}));
+    if (user) {
+      bcrypt.compare(req.body.password, user.password)
+      .then(result => {
+        if (result) {
+          const payload = {
+            _id: user._id,
+            username: user.username
+          };
+          jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '1d'},
+          (err, token) => {
+              res.json({
+                token: token
+          });
+        });
+      } else {
+        res.status(422).json({ error: err });
+      }
+    }).catch(err => res.status(422).json({error: err}));
+  }
 });
 });
 module.exports = router;

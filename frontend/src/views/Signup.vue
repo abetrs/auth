@@ -50,16 +50,16 @@ export default {
           body: JSON.stringify(sendData)
         }).then(resp => resp.json())
         .then((body) => {
-          if (body.error.name === 'MongoError') {
-            this.invalid = 'Username or email you entered is taken :(';
-          } if (body.error.name === 'ValidationError') {
-            this.invalid = 'Either you forgot something or you entered an invalid entry for some field';
-          }
           this.username = '';
           this.email = '';
           this.password = '';
-          console.log(body);
-        })
+          if (body.error.name === 'MongoError') {
+            this.invalid = 'Username or email you entered is taken :(';
+          }
+          if (body.error.name === 'ValidationError') {
+            this.invalid = 'Either you forgot something or you entered an invalid entry for some field';
+          }
+        });
     },
   },
 };
