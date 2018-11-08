@@ -35,33 +35,39 @@ export default {
     };
   },
   methods: {
-    sendUser: function () {
-      const API_URL = "http://localhost:3000/auth/signup";
-      const sendData = {
-        username: this.username,
-        email: this.email,
-        password: this.password
-      };
-      fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify(sendData)
-        }).then(resp => resp.json())
-        .then((body) => {
-          this.username = '';
-          this.email = '';
-          this.password = '';
-          if (body.error.name === 'MongoError') {
-            this.invalid = 'Username or email you entered is taken :(';
-          }
-          if (body.error.name === 'ValidationError') {
-            this.invalid = 'Either you forgot something or you entered an invalid entry for some field';
-          }
-        });
+  sendUser: function () {
+    const API_URL = "http://localhost:3000/auth/signup";
+    const sendData = {
+      username: this.username,
+      email: this.email,
+      password: this.password
+    };
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(sendData)
+      }).then(resp => resp.json())
+      .then((body) => {
+        this.username = '';
+        this.email = '';
+        this.password = '';
+        if (body.error.name === 'MongoError') {
+          this.invalid = 'Username or email you entered is taken :(';
+        }
+        if (body.error.name === 'ValidationError') {
+          this.invalid = 'Either you forgot something or you entered an invalid entry for some field';
+        }
+        this.$router.push('/login');
+      });
     },
   },
+  mounted: function() {
+    if(localStorage.token) {
+      this.$router.push('/');
+    }
+  }
 };
 
 </script>

@@ -29,24 +29,38 @@
     },
     methods: {
       logIn: function() {
-        const API_URL = "http://localhost:3000/auth/login";
-        const sendData = {
-          username: this.username,
-          password: this.password
-        };
-        fetch(API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-type': 'application/json'
-            },
-            body: JSON.stringify(sendData)
-        }).then(resp => {
-          resp.json().then(docs => {
-            console.log(docs);
-          });
-        });
+        if (this.username && this.password){
+          const API_URL = "http://localhost:3000/auth/login";
+          const sendData = {
+            username: this.username,
+            password: this.password
+          };
+          fetch(API_URL, {
+              method: 'POST',
+              headers: {
+                'Content-type': 'application/json'
+              },
+              body: JSON.stringify(sendData)
+          }).then(resp => {
+            resp.json().then(docs => {
+              if(docs.token) {
+                localStorage.token = docs.token;
+                this.$router.push('/');
+              } else {
+                this.invalid = 'Internal Server error 500';
+              }
+            });
+          }).catch(err => this.invalid="Username or password is invalid.");
+        } else {
+          this.invalid = 'Please enter your username or password';
+        }
       }
     },
+    mounted: function () {
+      if(localStorage.token) {
+        this.$router.push('/');
+      }
+    }
   }
 
 </script>
